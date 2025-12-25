@@ -1,0 +1,11 @@
+package com.example.AgroNearBackend.repostiory
+
+import com.example.AgroNearBackend.Entity.User
+import org.springframework.data.jpa.repository.JpaRepository
+
+interface UserRepository : JpaRepository<User, Int> {
+
+    fun findByEmail(email: String): User?
+
+    fun existsByEmail(email: String): Boolean
+}
