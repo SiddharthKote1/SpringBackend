@@ -1,3 +1,30 @@
 package com.example.AgroNearBackend.Entity
 
-data class User()
+import jakarta.persistence.Column
+import jakarta.persistence.Entity
+import jakarta.persistence.GeneratedValue
+import jakarta.persistence.GenerationType
+import jakarta.persistence.Id
+import jakarta.persistence.Table
+
+@Entity
+@Table(name="agro_users")
+data class User(
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    val id: Int? =null,
+
+    @Column(nullable=false)
+    val name: String,
+
+    @Column(unique=true,nullable=false)
+    val email: String,
+
+    @Column(nullable=false)
+    val password: String?,
+
+    @Column(nullable=false)
+    val role: String,
+
+    val profilePhoto: String? =null
+)

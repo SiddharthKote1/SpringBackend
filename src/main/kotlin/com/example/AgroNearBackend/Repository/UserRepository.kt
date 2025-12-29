@@ -1,4 +1,4 @@
-package com.example.AgroNearBackend.repostiory
+package com.example.AgroNearBackend.repository
 
 import com.example.AgroNearBackend.Entity.User
 import org.springframework.data.jpa.repository.JpaRepository
