@@ -4,13 +4,15 @@ import com.example.AgroNearBackend.Entity.User
 import com.example.AgroNearBackend.dto.LoginRequest
 import com.example.AgroNearBackend.dto.RegisterRequest
 import com.example.AgroNearBackend.repository.UserRepository
+import com.example.AgroNearBackend.security.JwtService
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 
 @Service
 class AuthService(
     private val userRepository: UserRepository,
-    private val passwordEncoder: PasswordEncoder
+    private val passwordEncoder: PasswordEncoder,
+    private val jwtService: JwtService
 ) {
 
     fun register(request: RegisterRequest) {
@@ -29,7 +31,7 @@ class AuthService(
         userRepository.save(user)
     }
 
-    fun login(request: LoginRequest): User {
+    fun login(request: LoginRequest): String {
 
         val user = userRepository.findByEmail(request.email)
             ?: throw RuntimeException("User not found")
@@ -41,6 +43,6 @@ class AuthService(
             throw RuntimeException("Invalid credentials")
         }
 
-        return user
+        return jwtService.generateAccessToken(user.email)
     }
 }
