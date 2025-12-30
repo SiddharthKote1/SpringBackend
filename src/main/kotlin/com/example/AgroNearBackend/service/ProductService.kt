@@ -3,7 +3,10 @@ package com.example.AgroNearBackend.service
 import com.example.AgroNearBackend.Entity.Product
 import com.example.AgroNearBackend.dto.ProductRequest
 import com.example.AgroNearBackend.repository.ProductRepository
+import jakarta.websocket.server.ServerEndpoint
+import org.springframework.stereotype.Service
 
+@Service
 class ProductService(
     private val productRepository: ProductRepository
 ) {

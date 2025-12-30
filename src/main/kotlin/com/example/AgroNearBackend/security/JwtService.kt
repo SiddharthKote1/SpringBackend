@@ -6,7 +6,6 @@ import io.jsonwebtoken.SignatureAlgorithm
 import io.jsonwebtoken.security.Keys
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
-import java.util.Base64
 import java.util.Date
 
 @Service
@@ -17,18 +16,19 @@ class JwtService(
 
 ) {
 
+    // HS256 needs at least 32 bytes
     private val secretKey = Keys.hmacShaKeyFor(
-        Base64.getDecoder().decode(jwtSecret)
+        jwtSecret.toByteArray()
     )
 
-    private val accessTokenValidityMs = 15 * 60 * 1000L
+    private val accessTokenValidityMs = 15 * 60 * 1000L // 15 minutes
 
-    fun generateAccessToken(userEmail: String): String {
+    fun generateAccessToken(email: String): String {
         val now = Date()
         val expiryDate = Date(now.time + accessTokenValidityMs)
 
         return Jwts.builder()
-            .setSubject(userEmail)
+            .setSubject(email)
             .setIssuedAt(now)
             .setExpiration(expiryDate)
             .signWith(secretKey, SignatureAlgorithm.HS256)
@@ -36,27 +36,26 @@ class JwtService(
     }
 
     fun validateToken(token: String): Boolean {
-        return parseAllClaims(token) != null
+        return try {
+            parseAllClaims(token)
+            true
+        } catch (e: Exception) {
+            false
+        }
     }
 
     fun getEmailFromToken(token: String): String {
-        val claims = parseAllClaims(token)
-            ?: throw RuntimeException("Invalid token")
-        return claims.subject
+        return parseAllClaims(token).subject
     }
 
-    private fun parseAllClaims(token: String): Claims? {
+    private fun parseAllClaims(token: String): Claims {
         val rawToken = if (token.startsWith("Bearer ")) {
             token.removePrefix("Bearer ")
         } else token
 
-        return try {
-            Jwts.parser()
-                .setSigningKey(secretKey)
-                .parseClaimsJws(rawToken)
-                .body
-        } catch (e: Exception) {
-            null
-        }
+        return Jwts.parser()
+            .setSigningKey(secretKey)
+            .parseClaimsJws(rawToken)
+            .body
     }
 }
