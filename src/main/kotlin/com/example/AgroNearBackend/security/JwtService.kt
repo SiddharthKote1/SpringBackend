@@ -6,6 +6,7 @@ import io.jsonwebtoken.SignatureAlgorithm
 import io.jsonwebtoken.security.Keys
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
+import java.util.Base64
 import java.util.Date
 
 @Service
@@ -16,19 +17,18 @@ class JwtService(
 
 ) {
 
-    // HS256 needs at least 32 bytes
     private val secretKey = Keys.hmacShaKeyFor(
-        jwtSecret.toByteArray()
+        Base64.getDecoder().decode(jwtSecret)
     )
 
-    private val accessTokenValidityMs = 15 * 60 * 1000L // 15 minutes
+    private val accessTokenValidityMs = 15 * 60 * 1000L
 
-    fun generateAccessToken(email: String): String {
+    fun generateAccessToken(userEmail: String): String {
         val now = Date()
         val expiryDate = Date(now.time + accessTokenValidityMs)
 
         return Jwts.builder()
-            .setSubject(email)
+            .setSubject(userEmail)
             .setIssuedAt(now)
             .setExpiration(expiryDate)
             .signWith(secretKey, SignatureAlgorithm.HS256)
@@ -36,26 +36,27 @@ class JwtService(
     }
 
     fun validateToken(token: String): Boolean {
-        return try {
-            parseAllClaims(token)
-            true
-        } catch (e: Exception) {
-            false
-        }
+        return parseAllClaims(token) != null
     }
 
     fun getEmailFromToken(token: String): String {
-        return parseAllClaims(token).subject
+        val claims = parseAllClaims(token)
+            ?: throw RuntimeException("Invalid token")
+        return claims.subject
     }
 
-    private fun parseAllClaims(token: String): Claims {
+    private fun parseAllClaims(token: String): Claims? {
         val rawToken = if (token.startsWith("Bearer ")) {
             token.removePrefix("Bearer ")
         } else token
 
-        return Jwts.parser()
-            .setSigningKey(secretKey)
-            .parseClaimsJws(rawToken)
-            .body
+        return try {
+            Jwts.parser()
+                .setSigningKey(secretKey)
+                .parseClaimsJws(rawToken)
+                .body
+        } catch (e: Exception) {
+            null
+        }
     }
 }
