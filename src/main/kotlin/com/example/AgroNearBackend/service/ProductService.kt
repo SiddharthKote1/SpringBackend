@@ -9,92 +9,29 @@ import org.springframework.stereotype.Service
 
 @Service
 class ProductService(
-    private val productRepository: ProductRepository
+    private val repo: ProductRepository
 ) {
 
-    // ✅ CREATE PRODUCT
-    fun addProduct(
-        request: ProductRequest,
-        imagePath: String,
-        farmer: User
-    ): Product {
-
-        val product = Product(
-            productName = request.productName,
-            productPrice = request.productPrice,
-            imageProduct = imagePath,
-            farmer = farmer
-        )
-
-        return productRepository.save(product)
-    }
-
-    // ✅ GET ALL PRODUCTS
-    fun getAllProducts(): List<ProductResponse> {
-        return productRepository.findAll().map { product ->
-            ProductResponse(
-                id = product.id,
-                productName = product.productName,
-                productPrice = product.productPrice,
-                imageProduct = product.imageProduct,
-                farmerName = product.farmer.name
+    fun addProduct(req: ProductRequest, img: String, user: User): ProductResponse {
+        val saved = repo.save(
+            Product(
+                productName = req.productName,
+                productPrice = req.productPrice,
+                imageProduct = img,
+                user = user
             )
-        }
-    }
-
-    // ✅ GET FARMER PRODUCTS
-    fun getProductsByFarmer(farmer: User): List<ProductResponse> {
-        return productRepository.findByFarmer(farmer).map { product ->
-            ProductResponse(
-                id = product.id,
-                productName = product.productName,
-                productPrice = product.productPrice,
-                imageProduct = product.imageProduct,
-                farmerName = farmer.name
-            )
-        }
-    }
-
-    // ✅ UPDATE PRODUCT
-    fun updateProduct(
-        productId: Long,
-        request: ProductRequest,
-        farmer: User
-    ): ProductResponse {
-
-        val product = productRepository.findById(productId)
-            .orElseThrow { RuntimeException("Product not found") }
-
-        if (product.farmer.id != farmer.id) {
-            throw RuntimeException("You are not allowed to update this product")
-        }
-
-        val updated = product.copy(
-            productName = request.productName,
-            productPrice = request.productPrice
         )
-
-        val saved = productRepository.save(updated)
-
-        return ProductResponse(
-            id = saved.id,
-            productName = saved.productName,
-            productPrice = saved.productPrice,
-            imageProduct = saved.imageProduct,
-            farmerName = saved.farmer.name
-        )
+        return ProductResponse(saved.id, saved.productName, saved.productPrice, saved.imageProduct, user.name)
     }
 
-    // ✅ DELETE PRODUCT
-    fun deleteProduct(productId: Long, farmer: User) {
-
-        val product = productRepository.findById(productId)
-            .orElseThrow { RuntimeException("Product not found") }
-
-        if (product.farmer.id != farmer.id) {
-            throw RuntimeException("You are not allowed to delete this product")
+    fun getAll(): List<ProductResponse> =
+        repo.findAll().map {
+            ProductResponse(it.id, it.productName, it.productPrice, it.imageProduct, it.user.name)
         }
 
-        productRepository.delete(product)
+    fun delete(id: Long, user: User) {
+        val product = repo.findById(id).orElseThrow()
+        if (product.user.id != user.id) throw RuntimeException("Not owner")
+        repo.delete(product)
     }
 }

@@ -10,40 +10,30 @@ import org.springframework.stereotype.Service
 
 @Service
 class AuthService(
-    private val userRepository: UserRepository,
-    private val passwordEncoder: PasswordEncoder,
-    private val jwtService: JwtService
+    private val repo: UserRepository,
+    private val encoder: PasswordEncoder,
+    private val jwt: JwtService
 ) {
 
-    fun register(request: RegisterRequest) {
+    fun register(req: RegisterRequest) {
+        if (repo.existsByEmail(req.email)) throw RuntimeException("Email exists")
 
-        if (userRepository.existsByEmail(request.email)) {
-            throw RuntimeException("Email already exists")
-        }
-
-        val user = User(
-            name = request.name,
-            email = request.email,
-            password = passwordEncoder.encode(request.password),
-            role = "USER"
+        repo.save(
+            User(
+                name = req.name,
+                email = req.email,
+                password = encoder.encode(req.password)
+            )
         )
-
-        userRepository.save(user)
     }
 
-    fun login(request: LoginRequest): String {
-
-        val user = userRepository.findByEmail(request.email)
+    fun login(req: LoginRequest): String {
+        val user = repo.findByEmail(req.email)
             ?: throw RuntimeException("User not found")
 
-        val isPasswordCorrect =
-            passwordEncoder.matches(request.password, user.password)
-
-        if (!isPasswordCorrect) {
+        if (!encoder.matches(req.password, user.password))
             throw RuntimeException("Invalid credentials")
-        }
 
-        return jwtService.generateAccessToken(user.email)
+        return jwt.generateToken(user.email)
     }
 }
-

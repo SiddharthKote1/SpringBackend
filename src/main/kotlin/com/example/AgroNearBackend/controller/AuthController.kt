@@ -20,6 +20,6 @@ class AuthController(
     @PostMapping("/login")
     fun login(@RequestBody request: LoginRequest): String {
         authService.login(request)
-        return "Login successful"
+        return "Login successfully"
     }
 }

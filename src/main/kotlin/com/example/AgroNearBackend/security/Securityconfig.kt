@@ -14,34 +14,17 @@ class SecurityConfig(
 ) {
 
     @Bean
-    fun securityFilterChain(http: HttpSecurity): SecurityFilterChain {
+    fun filterChain(http: HttpSecurity): SecurityFilterChain {
 
-        http
-            .csrf { it.disable() }
+        http.csrf { it.disable() }
             .sessionManagement {
                 it.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             }
             .authorizeHttpRequests {
-
                 it.requestMatchers("/auth/**").permitAll()
-
-                it.requestMatchers(HttpMethod.POST, "/products/**")
-                    .hasRole("FARMER")
-
-                it.requestMatchers("/wishlist/**")
-                    .hasAnyRole("BUYER", "FARMER")
-
-                it.requestMatchers(HttpMethod.GET, "/products/**")
-                    .hasAnyRole("FARMER", "BUYER")
-
                 it.anyRequest().authenticated()
             }
-            .addFilterBefore(
-                jwtAuthFilter,
-                UsernamePasswordAuthenticationFilter::class.java
-            )
-            .httpBasic { it.disable() }
-            .formLogin { it.disable() }
+            .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter::class.java)
 
         return http.build()
     }

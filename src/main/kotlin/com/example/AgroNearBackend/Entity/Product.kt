@@ -8,7 +8,7 @@ data class Product(
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long? = null,
+    val id: Long = 0,
 
     @Column(nullable = false)
     val productName: String,
@@ -19,7 +19,7 @@ data class Product(
     @Column(nullable = false)
     val imageProduct: String,
 
-    @ManyToOne
-    @JoinColumn(name = "farmer_id", nullable = false)
-    val farmer: User
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    val user: User
 )

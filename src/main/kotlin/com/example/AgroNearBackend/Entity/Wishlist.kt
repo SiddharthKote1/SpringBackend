@@ -13,13 +13,11 @@ data class Wishlist(
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long? = null,
+    val id: Long = 0,
 
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
     val user: User,
 
-    @ManyToOne
-    @JoinColumn(name = "product_id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
     val product: Product
 )

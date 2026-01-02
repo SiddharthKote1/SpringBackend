@@ -11,52 +11,23 @@ import java.util.Date
 
 @Service
 class JwtService(
-
     @Value("\${jwt.secret}")
     private val jwtSecret: String
-
 ) {
+    private val key = Keys.hmacShaKeyFor(jwtSecret.toByteArray())
 
-    private val secretKey = Keys.hmacShaKeyFor(
-        Base64.getDecoder().decode(jwtSecret)
-    )
-
-    private val accessTokenValidityMs = 15 * 60 * 1000L
-
-    fun generateAccessToken(userEmail: String): String {
-        val now = Date()
-        val expiryDate = Date(now.time + accessTokenValidityMs)
-
-        return Jwts.builder()
-            .setSubject(userEmail)
-            .setIssuedAt(now)
-            .setExpiration(expiryDate)
-            .signWith(secretKey, SignatureAlgorithm.HS256)
+    fun generateToken(email: String): String =
+        Jwts.builder()
+            .setSubject(email)
+            .setIssuedAt(Date())
+            .setExpiration(Date(System.currentTimeMillis() + 86400000))
+            .signWith(key, SignatureAlgorithm.HS256)
             .compact()
-    }
 
-    fun validateToken(token: String): Boolean {
-        return parseAllClaims(token) != null
-    }
-
-    fun getEmailFromToken(token: String): String {
-        val claims = parseAllClaims(token)
-            ?: throw RuntimeException("Invalid token")
-        return claims.subject
-    }
-
-    private fun parseAllClaims(token: String): Claims? {
-        val rawToken = if (token.startsWith("Bearer ")) {
-            token.removePrefix("Bearer ")
-        } else token
-
-        return try {
-            Jwts.parser()
-                .setSigningKey(secretKey)
-                .parseClaimsJws(rawToken)
-                .body
-        } catch (e: Exception) {
-            null
-        }
-    }
+    fun getEmail(token: String): String =
+        Jwts.parserBuilder()
+            .setSigningKey(key)
+            .build()
+            .parseClaimsJws(token)
+            .body.subject
 }

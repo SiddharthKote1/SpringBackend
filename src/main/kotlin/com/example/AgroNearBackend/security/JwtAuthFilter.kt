@@ -1,5 +1,6 @@
 package com.example.AgroNearBackend.security
 
+import com.example.AgroNearBackend.repository.UserRepository
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
@@ -10,28 +11,29 @@ import org.springframework.web.filter.OncePerRequestFilter
 
 @Component
 class JwtAuthFilter(
-    private val jwtService: JwtService
+    private val jwtService: JwtService,
+    private val userRepository: UserRepository
 ) : OncePerRequestFilter() {
 
     override fun doFilterInternal(
-        request: HttpServletRequest,
-        response: HttpServletResponse,
-        filterChain: FilterChain
+        req: HttpServletRequest,
+        res: HttpServletResponse,
+        chain: FilterChain
     ) {
-        val authHeader = request.getHeader("Authorization")
+        val header = req.getHeader("Authorization")
 
-        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+        if (header?.startsWith("Bearer ") == true) {
+            val token = header.removePrefix("Bearer ")
+            val email = jwtService.getEmail(token)
+            val user = userRepository.findByEmail(email)
 
-            if (jwtService.validateToken(authHeader)) {
-                val email = jwtService.getEmailFromToken(authHeader)
-
-                val authentication =
-                    UsernamePasswordAuthenticationToken(email, null, emptyList())
-
-                SecurityContextHolder.getContext().authentication = authentication
+            if (user != null) {
+                val auth = UsernamePasswordAuthenticationToken(user, null, emptyList())
+                SecurityContextHolder.getContext().authentication = auth
             }
         }
 
-        filterChain.doFilter(request, response)
+        chain.doFilter(req, res)
     }
 }
+

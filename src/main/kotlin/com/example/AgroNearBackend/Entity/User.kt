@@ -8,23 +8,21 @@ import jakarta.persistence.Id
 import jakarta.persistence.Table
 
 @Entity
-@Table(name="agro_users")
+@Table(name = "agro_users")
 data class User(
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long? =null,
+    val id: Long = 0,
 
-    @Column(nullable=false)
+    @Column(nullable = false)
     val name: String,
 
-    @Column(unique=true,nullable=false)
+    @Column(unique = true, nullable = false)
     val email: String,
 
-    @Column(nullable=false)
-    val password: String?,
+    @Column(nullable = false)
+    val password: String,
 
-    @Column(nullable=false)
-    val role: String,
-
-    val profilePhoto: String? =null
+    val profilePhoto: String? = null
 )

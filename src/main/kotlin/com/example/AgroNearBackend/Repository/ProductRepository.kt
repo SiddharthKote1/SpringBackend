@@ -5,6 +5,5 @@ import com.example.AgroNearBackend.Entity.User
 import org.springframework.data.jpa.repository.JpaRepository
 
 interface ProductRepository : JpaRepository<Product, Long> {
-
-    fun findByFarmer(farmer: User): List<Product>
+    fun findByUser(user: User): List<Product>
 }
