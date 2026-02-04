@@ -29,8 +29,6 @@ AgroNear Backend solves this using **Spring Security + JWT** and a clean backend
 - ❤️ Wishlist management APIs
 - 🧩 Clean layered architecture
 
-<!-- ⚙️ Flow Animation -->
-<img width="100%" src="https://media.tenor.com/0Vd8kF8QJZ0AAAAC/ui-flow.gif" />
 
 ---
 
