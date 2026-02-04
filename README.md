@@ -8,10 +8,6 @@
 <!-- 🎥 Hero Backend Animation -->
 <img width="100%" src="https://media.tenor.com/2uyENRmiUt0AAAAC/backend-development.gif" />
 
----
-
-<img src="https://user-images.githubusercontent.com/74038190/216656981-1e7b8f47-1b71-4f68-8c1b-4b7b1a4e5d2f.gif" width="100%" />
-
 ## 🚨 Problem Statement
 
 A reliable and secure backend system is required to manage **users, products, and business logic** while ensuring:
