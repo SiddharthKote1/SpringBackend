@@ -2,7 +2,7 @@
 <h1 align="center">🌾 AgroNear – Backend Service</h1>
 
 <p align="center">
-  <img src="https://readme-typing-svg.demolab.com?font=JetBrains+Mono&size=18&pause=1000&color=4CAF50&center=true&vCenter=true&width=650&lines=Secure+Spring+Boot+Backend;JWT+Authentication+%26+Authorization;Farmer+%E2%80%93+Buyer+Marketplace+APIs" />
+  <img src="https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExcGR3YmNkenhubnllcXh2eGF1dTNpNXJvd2ZqeTNtY3o0NjA5YmN2cSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/rIjzk2AJNbQ3rYFp45/giphy.gifsvg.demolab.comfont=JetBrains+Mono&size=18&pause=1000&color=4CAF50&center=true&vCenter=true&width=650&lines=Secure+Spring+Boot+Backend;JWT+Authentication+%26+Authorization;Farmer+%E2%80%93+Buyer+Marketplace+APIs" />
 </p>
 
 <!-- 🎥 Hero Backend Animation -->
