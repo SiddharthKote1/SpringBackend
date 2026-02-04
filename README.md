@@ -4,8 +4,6 @@
   <img src="https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExcGR3YmNkenhubnllcXh2eGF1dTNpNXJvd2ZqeTNtY3o0NjA5YmN2cSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/rIjzk2AJNbQ3rYFp45/giphy.gif" width="60%" />
 </p>
 
-<img width="100%" src="https://media.tenor.com/2uyENRmiUt0AAAAC/backend-development.gif" />
-
 ---
 
 ## 🚨 Problem Statement
