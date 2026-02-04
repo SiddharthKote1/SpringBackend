@@ -1,49 +1,58 @@
-<!-- 🌾 Project Title -->
-<h1 align="center">🌾 AgroNear – Backend Service</h1>
+# 🌾 AgroNear – Backend Service
 
 <p align="center">
-  <img src="https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExcGR3YmNkenhubnllcXh2eGF1dTNpNXJvd2ZqeTNtY3o0NjA5YmN2cSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/rIjzk2AJNbQ3rYFp45/giphy.gif" />
+  <img src="https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExcGR3YmNkenhubnllcXh2eGF1dTNpNXJvd2ZqeTNtY3o0NjA5YmN2cSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/rIjzk2AJNbQ3rYFp45/giphy.gif" width="60%" />
 </p>
 
-<!-- 🎥 Hero Backend Animation -->
 <img width="100%" src="https://media.tenor.com/2uyENRmiUt0AAAAC/backend-development.gif" />
+
+---
 
 ## 🚨 Problem Statement
 
-A reliable and secure backend system is required to manage **users, products, and business logic** while ensuring:
+Modern farmer–buyer platforms require a secure, scalable, and role-based backend system to manage users, products, and business logic while ensuring data integrity and controlled access.
 
-- 🔐 Secure authentication
-- 👥 Role-based access control
-- 🗄️ Data integrity for a farmer–buyer marketplace
-
-AgroNear Backend solves this using **Spring Security + JWT** and a clean backend architecture.
+AgroNear Backend solves this using Spring Security with JWT authentication to provide a reliable and maintainable backend architecture.
 
 ---
 
 ## ✨ Key Features
 
-- 🔐 User registration and login
-- 🔑 **JWT-based authentication & authorization**
-- 👨‍🌾👩‍💼 Role-based access (**Farmer / Buyer**)
-- 📦 Product upload & retrieval APIs
-- ❤️ Wishlist management APIs
-- 🧩 Clean layered architecture
-
+- Secure user registration and login
+- JWT-based authentication and authorization
+- Role-based access control (Farmer / Buyer)
+- Product upload and retrieval APIs
+- Wishlist management APIs
+- Clean layered backend architecture
 
 ---
 
 ## ⚙️ How It Works
 
-1️⃣ User registers or logs in  
-2️⃣ Backend generates a **JWT token**  
-3️⃣ Token is sent with every protected request  
-4️⃣ Spring Security validates the token  
-5️⃣ Role-based rules are enforced  
-6️⃣ Data is stored securely in **MySQL**
+1. User registers or logs in  
+2. Backend generates a JWT token  
+3. Token is sent with every protected request  
+4. Spring Security validates the token  
+5. Role-based rules are enforced  
+6. Data is stored securely in MySQL  
 
 ---
 
-## 🛠️ Tech Stack 🧩
+## 🔐 Authentication & Authorization
+
+### Public APIs
+- User Registration  
+- User Login  
+
+### Protected APIs
+- Product Management  
+- Wishlist Management  
+
+Authorization is enforced using JWT token validation and role-based access control.
+
+---
+
+## 🛠️ Tech Stack
 
 **Backend**
 - Kotlin
@@ -63,24 +72,16 @@ AgroNear Backend solves this using **Spring Security + JWT** and a clean backend
 
 ---
 
-<img src="https://user-images.githubusercontent.com/74038190/216656981-1e7b8f47-1b71-4f68-8c1b-4b7b1a4e5d2f.gif" width="100%" />
+## 🚀 Use Cases
 
-## 🔐 Authentication Flow
-
-- 🟢 Public APIs:
-  - User Registration
-  - User Login
-
-- 🔴 Protected APIs:
-  - Product Management
-  - Wishlist Management
-
-Authorization is enforced using:
-- JWT token validation
-- Role-based access control
+- Farmers can securely add and manage products
+- Buyers can browse products and manage wishlists
+- Role-based security prevents unauthorized access
+- Stateless authentication enables scalable backend services
 
 ---
 
-## 📂 Project Structure
+## 📌 Conclusion
 
+AgroNear Backend provides a secure, scalable, and maintainable backend foundation for a farmer–buyer marketplace by following industry best practices in authentication, authorization, and RESTful API design.
 
